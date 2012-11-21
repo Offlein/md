@@ -1,0 +1,6 @@
+<h3>Creating Debate</h3>
+<form action="{{ path('md_debate_new') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+    <input type="submit" value="Save"/>
+</form>

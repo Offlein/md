@@ -1,0 +1,20 @@
+md_debate_homepage:
+    pattern:  /
+    defaults: { _controller: MDDebateBundle:Debate:index }
+    
+md_debate_new:
+    pattern:  /debate/new
+    defaults: { _controller: MDDebateBundle:Debate:debateCreate }
+    
+md_debate_list:
+    pattern:  /debate/{id}
+    defaults: { _controller: MDDebateBundle:Debate:debateList }
+    requirements:
+        id:  \d+
+
+md_debate_contention_new:
+    pattern:  /debate/{id}/contention/new/{aff}
+    defaults: { _controller: MDDebateBundle:Debate:contentionCreate, aff: x }
+    requirements:
+        id:  \d+
+        aff: x|aff|neg

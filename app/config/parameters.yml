@@ -1,0 +1,14 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: debate
+    database_user: debate
+    database_password: CpP5yt3EEFfqQSEw
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: c94d747958ba71e85a2f1dd28d8093116ca9a9e2
+    database_path: null

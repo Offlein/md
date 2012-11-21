@@ -1,0 +1,30 @@
+@import "singularitygs";
+
+$base-font-size: 1em;
+@include base-font-sizing;
+$columns: 12;
+$gutter: .25;
+$padding: 1em;
+$container: 100%;
+
+#page {
+  @include background-grid;
+  @include container;
+  width: 960px;
+  padding: 1em 0;
+  margin: 0 auto;
+}
+.aff-section,
+.neg-section {
+  height: 100%;
+}
+.aff-section {
+  @include grid-span(6, 1);
+}
+.neg-section {
+  @include grid-span(6, 7);
+}
+.section-new {
+  display: none;
+  @include grid-span(8, 4);
+}

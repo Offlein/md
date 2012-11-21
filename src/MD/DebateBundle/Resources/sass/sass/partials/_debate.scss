@@ -1,0 +1,51 @@
+@import "compass/css3/images";
+ 
+h3.section-title {
+  background-color: mintcream;
+  font-size: 2em;
+  padding: 0.25em 0;
+}
+
+.aff-section,
+.neg-section {
+  padding: 1em;
+  position: relative;
+  a.create {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 2em;
+    display: none;
+    color: #666;
+    text-decoration: none;
+    text-align: center;
+    padding-top: 1em;
+  }
+  &:hover a.create {
+    display: block;
+  }
+}
+.aff-section {
+  background-color: rgb(224, 255, 255);
+  text-align: left;
+  a.create {
+    right: 0;
+    @include background-image(linear-gradient(right, rgba(0, 0, 0, 0.3), rgba(224, 255, 255, 0)));
+    &:hover {
+      @include background-image(linear-gradient(right, rgba(61, 255, 45, 0.7), rgba(224, 255, 255, 0)));
+      color: #333333;
+    }
+  }
+}
+.neg-section {
+  background-color: rgb(255, 182, 193);
+  text-align: right;
+  a.create {
+    left: 0;
+    @include background-image(linear-gradient(left, rgba(0, 0, 0, 1), rgba(255, 182, 193, 0)));
+    &:hover {
+      @include background-image(linear-gradient(left, rgba(255, 74, 192, 0.7), rgba(255, 182, 193, 0)));
+      color: #333333;
+    }
+  }
+}

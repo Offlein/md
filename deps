@@ -1,0 +1,3 @@
+[TremendKrumoBundle]
+    git=git://github.com/petrica/TremendKrumoBundle.git
+    target=/bundles/Tremend/KrumoBundle

@@ -1,0 +1,7 @@
+parameters:
+#    md_debate.example.class: MD\DebateBundle\Example
+
+services:
+#    md_debate.example:
+#        class: %md_debate.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

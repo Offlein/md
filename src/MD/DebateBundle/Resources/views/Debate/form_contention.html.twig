@@ -1,0 +1,8 @@
+<div class="contention-form">
+    <h3>New Contention</h3>
+    <form action="{{ path('md_debate_contention_new', {'id': id}) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" value="Save"/>
+        <a href="{{ path('md_debate_list', {'id': id}) }}" class="cancel">Cancel</a>
+    </form>
+</div>
