@@ -18,4 +18,32 @@ class DebateRepository extends EntityRepository
             ->createQuery('SELECT d FROM MDDebateBundle:Debate d ORDER BY d.name ASC')
             ->getResult();
     }
+    public function loadDebateFull($did)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery('
+            SELECT d, c FROM MDDebateBundle:Debate d
+            JOIN d.contentions c
+            WHERE d.id = :id'
+            )->setParameter('id', $did);
+
+        try {
+            return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+        /*
+
+        $query = $this->getEntityManager()
+            ->createQuery('
+                SELECT d, c FROM MDDebateBundle:Debate d
+                JOIN d.contentions c
+                WHERE d.id = :id')
+            ->setParameter('id', $did);
+        try {
+            return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }*/
+    }
 }

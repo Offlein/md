@@ -1,0 +1,7 @@
+{% for point in points %}
+    <div class="point" id="point-{{ point.id }}">
+        <span class="point-body">{{ point.body|nl2br }}</span>
+        <span class="point-source">{{ point.source }}</span>
+        <div class="point-created">({{ point.created|date("m/d/Y") }})</div>
+    </div>
+{% endfor %}

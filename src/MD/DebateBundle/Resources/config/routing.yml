@@ -2,15 +2,38 @@ md_debate_homepage:
     pattern:  /
     defaults: { _controller: MDDebateBundle:Debate:index }
     
-md_debate_new:
-    pattern:  /debate/new
-    defaults: { _controller: MDDebateBundle:Debate:debateCreate }
+md_form_debate:
+    pattern:  /form/debate/{did}
+    defaults: { _controller: MDDebateBundle:Debate:debateForm, did: new }
+    requirements:
+        did:  \d+
+
+md_form_contention:
+    pattern:  /form/contention/{did}/{cid}/{aff}
+    defaults: { _controller: MDDebateBundle:Debate:contentionForm, did: new, cid: new, aff: aff }
+    requirements:
+        did:  \d+
+        cid:  new|(\d+)
+        aff:  aff|neg
     
-md_debate_list:
-    pattern:  /debate/{id}
-    defaults: { _controller: MDDebateBundle:Debate:debateList }
+md_debate_template:
+    pattern:  /template/{type}
+    defaults: { _controller: MDDebateBundle:Debate:templateView }
+    requirements:
+        type: debate|contention|point
+
+md_debate_debate:
+    pattern:  /api/debate/{id}
+    defaults: { _controller: MDDebateBundle:Debate:debateRest, id: all }
     requirements:
         id:  \d+
+
+md_debate_contention:
+    pattern:  /api/debate/{did}/contention/{cid}
+    defaults: { _controller: MDDebateBundle:Debate:contentionRest, did: 0, cid:01 }
+    requirements:
+        did:  \d+
+        cid:  \d+
 
 md_debate_contention_new:
     pattern:  /debate/{id}/contention/new/{aff}
@@ -18,3 +41,17 @@ md_debate_contention_new:
     requirements:
         id:  \d+
         aff: x|aff|neg
+
+md_debate_point_list:
+    pattern:  /contention/{cid}/{pid}
+    defaults: { _controller: MDDebateBundle:Debate:contentionPointList, pid: all }
+    requirements:
+        cid:  \d+
+        pid:  \d+
+
+md_debate_point_new:
+    pattern:  /debate/{did}/contention/{cid}/point/new
+    defaults: { _controller: MDDebateBundle:Debate:pointCreate }
+    requirements:
+        did:  \d+
+        cid:  \d+

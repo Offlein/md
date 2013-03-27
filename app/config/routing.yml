@@ -29,8 +29,8 @@ fos_user_change_password:
 #logout:
 #    pattern:   /logout
 md_debate:
-    resource: "@MDDebateBundle/Resources/config/routing.yml"
-    prefix:   /
+  resource: "@MDDebateBundle/Resources/config/routing.yml"
+  prefix:   /
 _internal:
   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
   prefix:   /_internal

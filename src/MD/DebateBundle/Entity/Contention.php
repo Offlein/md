@@ -68,6 +68,11 @@ class Contention
     protected $debate;
 
     /**
+     * @ORM\OneToMany(targetEntity="Point", mappedBy="contention")
+     */
+    protected $points;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -144,6 +149,44 @@ class Contention
     public function getDebate()
     {
         return $this->debate;
+    }
+
+    /**
+     * Add points
+     *
+     * @param MD\DebateBundle\Entity\Point $points
+     * @return Contention
+     */
+    public function addPoint(\MD\DebateBundle\Entity\Point $points)
+    {
+        $this->points[] = $points;
+
+        return $this;
+    }
+
+    /**
+     * Remove points
+     *
+     * @param MD\DebateBundle\Entity\Point $points
+     */
+    public function removePoint(\MD\DebateBundle\Entity\Point $points)
+    {
+        $this->points->removeElement($points);
+    }
+
+    /**
+     * Get points
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getPoints()
+    {
+        return $this->points;
+    }
+
+    public function countPoints()
+    {
+        return count($this->getPoints());
     }
 
     /**
@@ -236,5 +279,32 @@ class Contention
     public function getEdited()
     {
         return $this->edited;
+    }
+
+    /**
+     * Method to update the Contention object based on changed values
+     * passed in via a new prototype Contention object. Sets $edited time.
+     *
+     * @param $newContention - A new Contention object whose values should overwrite this one's
+     * @return $this: the new, updated debate
+     */
+    public function updateContention(Contention $newContention) {
+        if ($name = $newContention->getName()) {
+            if (!empty($name)) {
+                $this->setName($name);
+            }
+        }
+        if ($aff = $newContention->getAff()) {
+            if (!empty($aff)) {
+                $this->setAff($aff);
+            }
+        }
+        if ($debate = $newContention->getDebate()) {
+            if (!empty($debate)) {
+                $this->setDebate($debate);
+            }
+        }
+        $this->setEdited(new \DateTime('now'));
+        return $this;
     }
 }

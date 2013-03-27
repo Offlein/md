@@ -9,16 +9,22 @@ class ContentionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', array('label' => 'Your contention:'));
-        // Only put an Aff choice if no aff is given
-        if ($options['data']->getAff() === null) {
-            $builder->add('aff', 'choice', array(
-                'expanded' => true,
-                'choices' => array(true => 'Affirmative', false => 'Negative'),
-                'required' => true,
-                'label' => 'Is this contention for the affirmative or the negative?'
-            ));
-        }
+        $builder->add('name', 'text', array(
+            'attr' => array(
+                'ng-model' => 'edit.name',
+                'placeholder' => 'New Contention',
+            ),
+            'label' => 'Your contention:'
+        ));
+        $builder->add('aff', 'choice', array(
+            'expanded' => true,
+            'choices' => array(
+                true => 'Affirmative',
+                false => 'Negative'
+            ),
+            'required' => true,
+            'label' => 'Is this contention for the affirmative or the negative?'
+        ));
     }
 
     public function getName()

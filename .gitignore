@@ -5,9 +5,13 @@ app/bootstrap*
 vendor/*
 */logs/*
 */cache/*
+web
 web/uploads/*
 web/bundles/*
 
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
+
+# Sass Caches
+src/MD/DebateBundle/Resources/sass/.sass-cache

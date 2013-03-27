@@ -1,6 +1,13 @@
-<h3>Creating Debate</h3>
-<form action="{{ path('md_debate_new') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
+<form>
+    <div class="debate-title-wrapper">
+        <h1 class="debate-title">{{ form_widget(form.name) }}</h1>
+    </div>
+    <div class="debate-description" >
+        {{ form_widget(form.description) }}
+    </div>
+    {{ form_rest(form) }}
 
-    <input type="submit" value="Save"/>
+    <button ng-click="toggleEditForm(debate.id)">Cancel</button>
+    <input type="submit" value="Save" ng-click="formDebateSubmit()" />
 </form>
+<!-- action="{{ path('md_debate_debate') }}{[{ '/' + debate.id }]}" method="{[{ formMethod(debate.id) }]}" {{ form_enctype(form) }} -->

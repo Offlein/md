@@ -1,25 +1,16 @@
-{% extends '::base.html.twig' %}
+Debate {{ debate.id }}: {{ debate.name }}
 
-{% block stylesheets %}
-    {% stylesheets '@MDDebateBundle/Resources/public/css/*' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    {% javascripts '@MDDebateBundle/Resources/public/js/*' %}
-    <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
-{% endblock %}
-
-{% block title %}Debate {{ debate.id }}: {{ debate.name }}{% endblock %}
-
-{% block body %}
-    <h1>Debate {{ debate.getId() }}: {{ debate.name }}</h1>
+<div class="debate-header">
+    <div class="debate-title-wrapper">
+        <h1 class="debate-title" id="debate-{{ debate.getId() }}">{{ debate.name }}</h1>
+        {% if debate.editable == 1 %}
+          <a class="button edit">Edit</a>
+        {% endif %}
+    </div>
     <div class="debate-description">
         {{ debate.getDescription() }}
     </div>
-    {% if contentions is not empty %}
-        {% include 'MDDebateBundle:Contention:contentionSection.html.twig' with {'contentions': contentions} %}
-    {% endif %}
-{% endblock %}
+<div>
+{% if contentions is not empty %}
+    {% include 'MDDebateBundle:Contention:contentionSection.html.twig' with {'contentions': contentions, 'debate': debate} %}
+{% endif %}

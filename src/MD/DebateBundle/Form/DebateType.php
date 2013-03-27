@@ -9,8 +9,18 @@ class DebateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text');
-        $builder->add('description', 'textarea');
+        $builder->add('name', 'text', array(
+            'attr' => array(
+                'ng-model' => 'edit.name',
+                'placeholder' => 'New Debate Name',
+            ),
+        ));
+        $builder->add('description', 'textarea', array(
+            'attr' => array(
+                'ng-model' => 'edit.description',
+                'placeholder' => 'New Description',
+            ),
+        ));
     }
 
     public function getName()
@@ -22,6 +32,8 @@ class DebateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'MD\DebateBundle\Entity\Debate',
+            'csrf_protection' => false,
         ));
     }
+
 }

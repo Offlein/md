@@ -1,7 +1,53 @@
+@import "sassy-buttons";
+@import 'partials/variables';
 @import 'partials/layout';
 @import 'partials/contention';
 @import 'partials/debate';
 
+
+body {
+  background: #FFFFFF url('/bundles/mddebate/images/bg-stripe.png') repeat top left;
+}
+#page-outer {
+  background: transparent url('/bundles/mddebate/images/bg-top.png') repeat-x top left;
+}
+#headerbar {
+  background: transparent url('/bundles/mddebate/images/bg-header.png') repeat-x top left;
+  height: 43px;
+}
+#logo {
+  img {
+
+  }
+}
+
+$speechBubbleColor: $color2-highlight;
+
+#growl {
+  opacity: 0.0;
+  color: #333;
+  background: $speechBubbleColor;
+  font-size: 0.85em;
+  &:after {
+    border-color: transparent $speechBubbleColor transparent transparent;
+  }
+}
+#growl.ui-show {
+  opacity: 1.0;
+}
+#growl.ui-hide {
+  opacity: 0.0;
+  transition: all 0.5 ease; // You should probably browser-prefix this
+  -moz-transition: all 0.5s ease; /* Firefox 4 */
+  -webkit-transition: all 0.5s ease; /* Safari and Chrome */
+  -o-transition: all 0.5s ease; /* Opera */
+}
+
+#page {
+  background-color: #FFFFFF;
+  @include box-shadow(rgba(100, 100, 100, 0.5) 0 0 6px 4px);
+  box-shadow-bottom: 0;
+}
 .clearfix:before,
 .clearfix:after {
   content: " "; /* 1 */
@@ -10,4 +56,16 @@
 
 .clearfix:after {
   clear: both;
+}
+
+.button {
+  @include sassy-button("flat", 3px, 11px, #CCCCCC, #999999, #fff, "false");
+  vertical-align: middle;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  padding: 2px 6px;
+  &:hover {
+    background-color: #AAAAAA;
+  }
 }

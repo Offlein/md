@@ -1,9 +1,46 @@
 @import "compass/css3/images";
- 
-h3.section-title {
-  background-color: mintcream;
+
+.debate-section .section-content {
+  background: transparent url('/bundles/mddebate/images/bg.jpg') no-repeat top center;
+  background-size: 100% 100%;
+}
+
+.debate-title-wrapper {
   font-size: 2em;
-  padding: 0.25em 0;
+}
+h1.debate-title {
+  display: inline;
+  &, input {
+    height: 40px;
+    line-height: 40px;
+  }
+}
+.debate-description {
+  margin: 0.5em 0 1em;
+}
+h1.debate-title,
+.debate-description {
+  input,
+  textarea {
+    font-size: inherit;
+    font: inherit;
+    margin: -5px;
+    padding: 5px;
+    width: 100%;
+    border: 0;
+    background-color: $color2-bg;
+  }
+}
+
+
+h3.section-title {
+  font-size: 1.2em;
+  padding: 0.25em 0 0.25em 0.8em;
+  background-color: rgb(5, 162, 162);
+  @include border-radius(6px 6px 0 0);
+  color: #FFFFFF;
+  text-align: center;
+  font-family: "Lucida Sans Unicode";
 }
 
 .aff-section,
@@ -26,25 +63,19 @@ h3.section-title {
   }
 }
 .aff-section {
-  background-color: rgb(224, 255, 255);
   text-align: left;
   a.create {
     right: 0;
-    @include background-image(linear-gradient(right, rgba(0, 0, 0, 0.3), rgba(224, 255, 255, 0)));
     &:hover {
-      @include background-image(linear-gradient(right, rgba(61, 255, 45, 0.7), rgba(224, 255, 255, 0)));
       color: #333333;
     }
   }
 }
 .neg-section {
-  background-color: rgb(255, 182, 193);
   text-align: right;
   a.create {
     left: 0;
-    @include background-image(linear-gradient(left, rgba(0, 0, 0, 1), rgba(255, 182, 193, 0)));
     &:hover {
-      @include background-image(linear-gradient(left, rgba(255, 74, 192, 0.7), rgba(255, 182, 193, 0)));
       color: #333333;
     }
   }

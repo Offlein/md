@@ -3,17 +3,9 @@
 {% block sectionId %}contention{% endblock %}
 {% block sectionTitle %}Contentions{% endblock %}
 
-{% block sectionContent %}
-    {% for key,value in contentions %}
-        <div class="{{  key }}-section contentions-{{ key }} clearfix">
-            {% for contention in value %}
-                {% include 'MDDebateBundle:Contention:contentionItem.html.twig' with {'contention': contention} %}
-            {% endfor %}
-            <a class="button create" href="{{ path('md_debate_contention_new', {'id': id, 'aff': key}) }}">N<br />E<br />W</a>
-        </div>
-    {% endfor %}
-{% endblock %}
 
+{#
 {% block sectionCreate %}
     {% render "MDDebateBundle:Debate:contentionCreate" with {'id': id} %}
 {% endblock %}
+#}

@@ -1,3 +1,5 @@
+/*
+
 $(document).ready(function(){
     // General "Create" button for creating new contention, etc.
     $("a.create").click(function() {
@@ -32,4 +34,4 @@ function cancelPopup(cancel){
         cancel.parents(".section-new").slideUp();
         return false;
     }
-}
+}*/

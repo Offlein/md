@@ -1,1 +1,20 @@
-Heyya {{ name }}!
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {% stylesheets "@MDDebateBundle/Resources/public/css/*.css" %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@MDDebateBundle/Resources/public/lib/angular/angular.js'
+    '@MDDebateBundle/Resources/public/js/app.js'
+    '@MDDebateBundle/Resources/public/js/controllers.js'
+    '@MDDebateBundle/Resources/public/js/filters.js'
+    '@MDDebateBundle/Resources/public/js/hinclude.js'
+    '@MDDebateBundle/Resources/public/js/angular-ui/*.js'
+    %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}

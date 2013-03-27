@@ -11,7 +11,7 @@ class DebateManager
     {
         $this->debate = $debate;
 
-        if (empty($this->debate->getName())) {
+        if (!($this->debate->getName())) {
             throwException("fuck");
         }
     }

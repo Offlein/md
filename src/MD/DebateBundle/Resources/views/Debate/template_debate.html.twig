@@ -1,0 +1,22 @@
+<div class="debate-header">
+    <div class="debate-title-wrapper">
+        <h1 class="debate-title" id="debate-{[{ debate.id }]}">{[{ debate.name }]}</h1>
+    </div>
+
+    <div ng-show="debate.editable" class="debate-controls">
+        <a class="button edit" ng-click="editing = true">Edit</a>
+        <div ng-show="editing" class="form debate-form">
+            {% include 'MDDebateBundle:Debate:form_debate.html.twig' %}
+        </div>
+    </div>
+
+    <div class="debate-description">
+        {[{ debate.description }]}
+    </div>
+<div>
+
+<div ng-show="debate.contentions_sorted" class="debate-contentions" >
+    <?php echo $view->render(
+        'MDDebateBundle:Contention:template_contention.html.php'
+    ) ?>
+</div>

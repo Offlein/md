@@ -1,0 +1,71 @@
+$newPointWidth: 7.5em;
+$newPointMargin: 0em;
+
+.contention {
+  padding: 0 0 1em;
+  margin: 0 0 1em 0;
+  border-bottom: 2px solid rgba(30, 30, 30, 0.2);
+  &:last-of-type {
+    border-bottom: 0;
+  }
+  .contention-created {
+    color: rgba(0, 0, 0, 0.35);
+    clear: both;
+  }
+  .points .point {
+    margin: 1em 0 2em;
+    &:last-of-type {
+      margin-bottom: 0.5em;
+    }
+  }
+  .new-point a.button {
+    width: $newPointWidth;
+  }
+}
+h2.contention-name {
+  font-size: 1.25em;
+  display: inline;
+}
+
+.contention-heading {
+  display: inline;
+  position: relative;
+  .new-point {
+    position: absolute;
+    top: 0;
+  }
+}
+.aff-section {
+  .contention-heading {
+    .new-point {
+      right: -($newPointMargin+$newPointWidth);
+      a.button {
+        background-color: $affHighlight;
+        &:hover {
+          background-color: $green;
+        }
+      }
+    }
+  }
+  .points .point {
+    padding: 0 2em 0 1em;
+    border-left: $affHighlight solid 2px;
+  }
+}
+.neg-section {
+  .contention-heading {
+    .new-point {
+      left: -($newPointMargin+$newPointWidth);
+      a.button {
+        background-color: $negHighlight;
+        &:hover {
+          background-color: $red;
+        }
+      }
+    }
+  }
+  .points .point {
+    padding: 0 1em 0 2em;
+    border-right: $negHighlight solid 2px;
+  }
+}

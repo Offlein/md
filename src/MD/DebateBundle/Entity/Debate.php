@@ -48,9 +48,14 @@ class Debate
      */
     protected $contentions;
 
+    protected $contentionsSorted;
+    private $editable;
+
     public function __construct()
     {
         $this->contentions = new ArrayCollection();
+        $this->contentionsSorted = new ArrayCollection();
+        $this->editable = false;
     }
 
 
@@ -164,5 +169,54 @@ class Debate
     public function getCreated()
     {
         return $this->created;
+    }
+
+
+    public function getEditable() {
+        return $this->editable;
+    }
+    public function setEditable($grant = false) {
+        $this->editable = $grant;
+        return $this;
+    }
+
+    public function sortContentions()
+    {
+        foreach ($this->contentions as $contention) {
+            if ($contention->getAff()) {
+                $this->contentionsSorted['aff'][] = $contention;
+            }
+            else {
+                $this->contentionsSorted['neg'][] = $contention;
+            }
+        }
+        unset($this->contentions);
+        return $this;
+    }
+
+    /**
+     * Method to update the Debate object based on changed values
+     * passed in via a new prototype Debate object. Sets $edited time.
+     *
+     * @param $newDebate - A new Debate object whose values should overwrite this one's
+     * @return $this: the new, updated debate
+     */
+    public function updateDebate(Debate $newDebate) {
+        if ($name = $newDebate->getName()) {
+            if (!empty($name)) {
+                $this->setName($name);
+            }
+        }
+        if ($description = $newDebate->getDescription()) {
+            if (!empty($description)) {
+                $this->setDescription($description);
+            }
+        }
+        if ($contentions = $newDebate->getContentions()) {
+            if (is_array($contentions)) {
+                $this->contentions = $contentions;
+            }
+        }
+        return $this;
     }
 }
