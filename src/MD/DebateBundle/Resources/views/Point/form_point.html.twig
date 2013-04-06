@@ -1,8 +1,7 @@
-<div class="point-form">
-    <h3>New Point</h3>
-    <form action="{{ path('md_debate_point_new', {'did': did, 'cid': cid}) }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <input type="submit" value="Save"/>
-        <a href="{{ path('md_debate_list', {'id': did}) }}" class="cancel">Cancel</a>
-    </form>
-</div>
+<form ng-submit="formPointSubmit()">
+    {{ form_widget(form.body, { 'attr': {'ng-model': 'edit.body'} }) }}
+    {{ form_widget(form.source, { 'attr': {'ng-model': 'edit.source'} }) }}
+
+    <input type="button" ng-click="toggleEditForm()" value="Cancel" />
+    <input type="submit" value="Save" />
+</form>

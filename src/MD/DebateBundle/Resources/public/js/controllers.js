@@ -2,34 +2,32 @@
 
 /* Controllers */
 
-function appFrameCtrl($scope, appFrameService, $timeout) {
+function appFrameCtrl($scope, growlService, $timeout) {
   $scope.growlState = false;
   $scope.growlMessage = '...';
-  $scope.$on( 'appFrameService.growlStateUpdate', function( event, newState ) {
+  $scope.$on( 'growlService.growlStateUpdate', function( event, newState ) {
     $scope.growlState = newState;
   });
-  $scope.$on( 'appFrameService.growlMessage', function( event, newMessage ) {
+  $scope.$on( 'growlService.growlMessage', function( event, newMessage ) {
     $scope.growlMessage = newMessage;
     $scope.growlState = true;
   });
 }
-appFrameCtrl.$inject = ['$scope', 'appFrameService', '$timeout'];
+appFrameCtrl.$inject = ['$scope', 'growlService', '$timeout'];
 
-function DebateCtrl($scope, appFrameService, $route, $http, $routeParams, $location) {
+function DebateCtrl($scope, debateService, $route, $http, $routeParams, $location) {
   $scope.$route = $route;
   $scope.$location = $location;
   $scope.$routeParams = $routeParams;
 
   // Initialization
-  $scope.apiPathSubmit = 'api/debate';
   $scope.editing = false;
   $scope.memory = {}; // An object to hold unedited Debate objects while editing
+  $scope.edit = {};
 
   // Handle Routes
-  $http.get('api/debate/'+$scope.$routeParams.debateId).success(function(data) {
-      $scope.debate = data;
-      $scope.editFormPath = 'form/debate/1';
-  });
+  $scope.debate = debateService.load($scope.$routeParams.debateId);
+  $scope.editFormPath = 'form/debate/1';
 
   $scope.getPath = function(did) {
     var path;
@@ -62,6 +60,7 @@ function DebateCtrl($scope, appFrameService, $route, $http, $routeParams, $locat
 
   // Toggle Debate Edit Form
   $scope.toggleEditForm = function() {
+    console.log('togglin\'');
     $scope.editing = !$scope.editing;
     if ($scope.editing == true) {
       // We are now editing
@@ -77,118 +76,115 @@ function DebateCtrl($scope, appFrameService, $route, $http, $routeParams, $locat
 
   // Handle Form Submissions
   $scope.formDebateSubmit = function() {
-    var formMethod = 'POST';
-    var formAction = $scope.apiPathSubmit;
-    var newDebate = {};
-
-    if (angular.isNumber(this.edit.id)) {
-      formMethod = 'PUT';
-      formAction += '/'+this.edit.id;
-      newDebate.id  = this.edit.id;
-    }
-
-    newDebate.name         = this.edit.name;
-    newDebate.description  = this.edit.description;
-
-    appFrameService.growlDelay('...Still saving debate...');
-
-    $http({method: formMethod, url: formAction, data: newDebate}).
-      success(function(data, status) {
-        appFrameService.growl('...I saved your debate.');
-        $scope.memory = angular.copy(data);
-        $scope.debate = angular.copy(data);
-        $scope.toggleEditForm();
-        $scope.saving = false;
-      }).
-      error(function(data, status) {
-        //alert("Saving Debate failed!");
-        appFrameService.growl('...Your debate failed to save! Please try again.', 10000);
-      });
-
+    console.log($scope.edit);
+    debateService.save($scope.edit);
   };
 }
-DebateCtrl.$inject = ['$scope', 'appFrameService', '$route', '$http', '$routeParams', '$location'];
+DebateCtrl.$inject = ['$scope', 'debateService', '$route', '$http', '$routeParams', '$location'];
 
-function contentionGroupCtrl($scope, appFrameService, $http) {
+function contentionGroupCtrl($scope, restService) {
   // Initialization
-  $scope.apiPathSubmit = 'api/debate/'+$scope.debate.id+'/contention';
+  var $parent = $scope.$parent;
+  console.log($parent.debate);
+
+  console.log($scope);
+  $scope.apiSubmitPath = 'api/debate/'+$scope.debate.id+'/contention';
   $scope.editing = false;
   $scope.memory = {}; // An object to hold unedited Contention objects while editing
   $scope.edit = {};
 
-  $scope.getPath = function(cid, aff) {
+  $scope.getPath = function(did, cid, aff) {
     var path;
-    if (!(angular.isNumber(cid))) {
+    if (!(angular.isNumber(did))) {
       return false;
     }
-    path = 'form/contention/'+cid+'/new/'+aff;
+    if (!(angular.isNumber(cid))) {
+      cid = 'new';
+    }
+    path = 'form/contention/'+did+'/'+cid;
+    if (cid == 'new') {
+      path += '/'+aff
+    }
     return path;
-  }
-  $scope.affToInt = function(affString) {
+  };
+  var affToInt = function(affString) {
     if (affString === 'aff') {
       return 1;
     }
     else if (affString === 'neg') {
       return 0;
     }
-  }
+  };
+
+  // Toggle New Contention Form
+  $scope.toggleEditForm = function() {
+    var ct;
+    $scope.editing = !$scope.editing;
+    if ($scope.editing == true) {
+      if ($scope.contentionType == 'aff') {
+        ct = 1;
+      }
+      else {
+        ct = 0;
+      }
+      console.log($scope.edit);
+      $scope.edit.aff = ct;
+      console.log($scope.contentionGroup);
+      console.log($scope.contentionType);
+      console.log($scope.edit.aff);
+
+      // We are now editing
+      $scope.edit.name = '';
+    }
+  };
+
+  $scope.formContentionSubmit = function() {
+    restService.saveContention($scope.edit, $scope.apiSubmitPath)
+      .then(function(response) {
+        if (response.status === 200) {
+          // Successfully created.
+          $scope.contentionGroup.unshift(response.data);
+          $scope.toggleEditForm();
+        }
+      });
+  };
+}
+contentionGroupCtrl.$inject = ['$scope', 'restService'];
+
+function contentionCtrl($scope, restService) {
+  // Initialization
+  $scope.editing = false;
+  $scope.memory = {};
+  $scope.edit = {};
 
   // Toggle Contention New Form
   $scope.toggleEditForm = function() {
+    console.log("Wooba");
     $scope.editing = !$scope.editing;
     if ($scope.editing == true) {
-      // We are now editing
-      $scope.edit.name = '';
-      $scope.edit.aff = $scope.affToInt($scope.contentionType);
-      console.log($scope.affToInt($scope.contentionType));
+      $scope.memory = angular.copy($scope.contention);
+      $scope.edit = angular.copy($scope.contention);
     }
     else {
-      // We are stopping editing
-      $scope.edit.name = angular.copy($scope.memory);
+      $scope.contention = angular.copy($scope.memory);
     }
-    console.log($scope.memory);
   };
 
-  // Handle Form Submissions
   $scope.formContentionSubmit = function() {
-    var formMethod = 'POST';
-    var formAction = $scope.apiPathSubmit;
-    var newContention = {};
-
-    console.log(angular.isNumber(this.edit.id));
-
-    if (angular.isNumber(this.edit.id)) {
-      formMethod = 'PUT';
-      formAction += '/'+this.edit.id;
-      newContention.id = this.edit.id;
-    }
-    newContention.name  = this.edit.name;
-    newContention.aff   = this.edit.aff;
-    console.log($scope.debate);
-
-    appFrameService.growlDelay('...Still saving contention...');
-
-    $http({method: formMethod, url: formAction, data: newContention}).
-      success(function(data, status) {
-        appFrameService.growl('...I saved your contention.');
-        $scope.memory = angular.copy(data);
-        var contentionPush = data;
-        delete contentionPush.debate;
-        $scope.contentionGroup.push(contentionPush);
-        $scope.toggleEditForm();
-        $scope.saving = false;
-      }).
-      error(function(data, status) {
-        //alert("Saving Debate failed!");
-        appFrameService.growl('...Your contention failed to save! Please try again.', 10000);
+    restService.saveContention($scope.edit, $scope.apiSubmitPath)
+      .then(function(response) {
+        if (response.status === 200) {
+          // Successfully updated.
+          $scope.contention.id = response.data.id;
+          $scope.contention.name = response.data.name;
+          $scope.editing = false;
+        }
       });
-
   };
 }
-contentionGroupCtrl.$inject = ['$scope', 'appFrameService', '$http'];
+contentionCtrl.$inject = ['$scope', 'restService'];
 
-function contentionCtrl($scope, appFrameService) {
+function pointCtrl($scope, restService) {
 
 }
-contentionCtrl.$inject = ['$scope', 'appFrameService'];
-
+pointCtrl.$inject = ['$scope', 'restService', '$route', '$http', '$routeParams', '$location'];

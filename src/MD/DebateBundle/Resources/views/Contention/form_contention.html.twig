@@ -1,12 +1,12 @@
-<form>
+<form ng-submit="formContentionSubmit()">
     {{ form_widget(form.name) }}
-    <div ng-show="contentionAffSet(contentionType)">
+    <div >
         {{ form_widget(form.aff.children[0], { 'attr': {'ng-model': 'edit.aff'} }) }}
         {{ form_label(form.aff.children[0]) }}
         {{ form_widget(form.aff.children[1], { 'attr': {'ng-model': 'edit.aff'} }) }}
         {{ form_label(form.aff.children[1]) }}
     </div>
 
-    <button ng-click="toggleEditForm()">Cancel</button>
-    <input type="submit" value="Save" ng-click="formContentionSubmit()" />
+    <input type="button" ng-click="toggleEditForm()" value="Cancel" />
+    <input type="submit" value="Save" />
 </form>

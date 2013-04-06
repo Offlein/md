@@ -45,6 +45,7 @@ class Debate
 
     /**
      * @ORM\OneToMany(targetEntity="Contention", mappedBy="debate")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     protected $contentions;
 
@@ -218,5 +219,11 @@ class Debate
             }
         }
         return $this;
+    }
+
+    public function basicCopy() {
+        $basicDebate = $this;
+        unset($basicDebate->contentions);
+        return $basicDebate;
     }
 }

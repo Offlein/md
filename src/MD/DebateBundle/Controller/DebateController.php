@@ -83,12 +83,12 @@ class DebateController extends Controller
                 // Load Debate
                 $debate = $this->debateLoader($did);
                 // Update
-                $debate->updateDebate($newDebate);
+                $debate->updateDebate($newDebate, true);
                 // Save
                 $this->getDoctrine()->getManager()->flush();
 
                 // Prepare to view
-                $debate->sortContentions();
+                $debate = $debate->basicCopy();
                 $debate->setEditable( $this->checkEditable($debate) );
 
                 // Serialize results
@@ -243,7 +243,20 @@ class DebateController extends Controller
         $debate = $this->debateLoader($did);
 
         if ($method == 'PUT') {
+            // Load debate, thereby checking access
+            $debate = $this->debateLoader($did);
 
+            // Build the contention
+            $contention = $this->contentionLoader($cid);
+            $contention->updateContention($newContention);
+
+            // Save the contention
+            $this->getDoctrine()->getManager()->flush();
+
+            // Serialize results
+            $serializer = $this->get('serializer');
+            $data = $serializer->serialize($contention, 'json'); // json|xml|yml
+            return new Response($data);
         }
         elseif ($method == 'POST') {
             $contention = new Contention();
