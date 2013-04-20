@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var debateAppModule = angular.module('debateApp', ['ui', 'debateApp.filters'])
+var debateAppModule = angular.module('debateApp', ['ui', 'debateApp.filters', 'ngResource'])
   .config(['$interpolateProvider', function ($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
     $interpolateProvider.endSymbol('}]}');

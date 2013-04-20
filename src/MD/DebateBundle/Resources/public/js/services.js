@@ -29,7 +29,7 @@ debateAppModule.factory('growlService', ['$rootScope', '$timeout', function($roo
     },
     growlDelay: function(newMessage, delay) {
       self = this;
-      delay = typeof delay !== 'undefined' ? delayt : self.growlDefaultDelay;
+      delay = typeof delay !== 'undefined' ? delay : self.growlDefaultDelay;
       $timeout.cancel(self.timeoutPromise);
       if (angular.isNumber(delay) && delay > 0) {
         self.timeoutPromise = $timeout(function() {
@@ -40,22 +40,50 @@ debateAppModule.factory('growlService', ['$rootScope', '$timeout', function($roo
   };
 }]);
 
-debateAppModule.factory('debateService', ['$rootScope', 'growlService', 'restService', function($rootScope, growlService, restService) {
+debateAppModule.factory('debateService', ['$rootScope', '$resource', 'growlService', 'restService', function($rootScope, $resource, growlService, restService) {
   return {
-    load: function(did) {
-      var Debate = $resource('/api/debate/:debateId', {debateId:'@did'});
-      var debate = Debate.get({debateId:did}, function() {
-        
-      });
-      /*return restService.loadDebate(did)
-        .then(function(response) {
-          if (response.status === 200) {
-            // Successfully updated.
-            return response.data;
-          }
-        });*/
+    Debate: $resource('api/debate/:debateId', {debateId:'@id'}, {
+      update: {method: 'PUT'}
+    }),
+    load: function(id) {
+      var debate = this.Debate.get({debateId:id});
+      return debate;
     },
-    save: function(debate) {
+    save: function(debateSave) {
+      console.log(debateSave.id);
+      if (!(angular.isDefined(debateSave.id))) {
+        // No ID already set; create a new debate and don't update
+        var newDebate = new this.Debate(debateSave);
+        console.log(newDebate);
+        newDebate.$save();
+        console.log(newDebate);
+      }
+      else {
+        // Updating, not creating new
+        growlService.growlDelay("Taking a long time to load...");
+        var newDebate = this.Debate.get({debateId:debateSave.id}, function() {
+          // Success
+          newDebate.name = debateSave.name;
+          newDebate.description = debateSave.description;
+          delete newDebate.contentions_sorted;
+          delete newDebate.editable;
+          growlService.growlDelay("Taking a long time to save...");
+          newDebate.$update(function() {
+            // Update succeeded
+            growlService.growl("Debate saved OK!");
+          }, function() {
+            // Update Failed!
+            growlService.growl("Debate changes failed to save!", 0);
+          });
+
+        }, function() {
+          // Failure to load before saving
+          growlService.growl("Unable to connect Debate to server!", 0);
+        });
+      }
+      return newDebate;
+
+      /*
       var formMethod = 'POST';
       var apiSubmitPath = 'api/debate';
       var newDebate = {};
@@ -83,6 +111,7 @@ debateAppModule.factory('debateService', ['$rootScope', 'growlService', 'restSer
             growlService.growl('...Your debate failed to save! Error: '+reason, 10000);
           }
         });
+        */
     }
   };
 }]);

@@ -27,6 +27,7 @@ function DebateCtrl($scope, debateService, $route, $http, $routeParams, $locatio
 
   // Handle Routes
   $scope.debate = debateService.load($scope.$routeParams.debateId);
+  console.log($scope.debate);
   $scope.editFormPath = 'form/debate/1';
 
   $scope.getPath = function(did) {
@@ -76,8 +77,9 @@ function DebateCtrl($scope, debateService, $route, $http, $routeParams, $locatio
 
   // Handle Form Submissions
   $scope.formDebateSubmit = function() {
-    console.log($scope.edit);
-    debateService.save($scope.edit);
+    var newDebate = debateService.save($scope.edit);
+    $scope.debate = $scope.edit;
+    $scope.editing = false;
   };
 }
 DebateCtrl.$inject = ['$scope', 'debateService', '$route', '$http', '$routeParams', '$location'];
